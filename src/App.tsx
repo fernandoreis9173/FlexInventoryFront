@@ -4,14 +4,15 @@ import Footer from './components/Footer';
 import Header from './components/Header';
 //import CadastroModelos from './components/Modelo';
 //import Alertas from './components/Alerts';
-import CadastroFabricante from './components/Fabricante';
+import AdicionarItem from './components/AddItem';
+//import CadastroFabricante from './components/Fabricante';
 
 function App() {
   return (
     <>
       
       <Header />
-      <CadastroFabricante />
+      <AdicionarItem />
       <Footer />
       <GlobalStyle />
     </>

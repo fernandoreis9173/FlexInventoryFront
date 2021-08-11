@@ -105,35 +105,34 @@ export default createGlobalStyle`
     margin-top: 0;
   }
 
-  input {
+  .input_fabricante {
     border: none;
     border-radius: 0.25rem;
     padding: 0.8rem;
     width: 100%;
     background: #f0f2f5;
     margin-top: 0.2rem;
-    margin-bottom: 1rem;
-    margin-right: 2rem;
+    margin-right: 1rem;
     margin-left: 0;
+    margin-bottom: 1rem;
     box-shadow: 1px 1px 0.25rem #0000004d;
   }
 
-  .input-group {
+  input {
+    
+  
+  & .input-group {
     margin-top: 1rem;
   }
-
-  .input-group strong {
+  & .input-group strong {
     margin-right: 5.8rem;
-    margin-top: -0.25rem;
+    margin-top: -0.2rem;
     margin-bottom: -0.25rem;
   }
-
-  .input-group select,
-  label {
+  & .input-group select, label {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+    }
   }
 
   select {
@@ -279,7 +278,14 @@ export default createGlobalStyle`
    }
   }
 
-  input {
+  .formInput {
+    display: grid;
+    grid-template-columns: repeat(8, 100px);
+    grid-gap: 10px;
+
+  }
+
+  .input_fabricante {
     border: none;
     display: flex;
     border-radius: 0.25rem;
@@ -291,6 +297,31 @@ export default createGlobalStyle`
     margin-left: 0;
     margin-bottom: 1rem;
     box-shadow: 1px 1px 0.25rem #0000004d;
+  }
+
+  .itemInput {
+    border: none;
+    display: flex;
+    border-radius: 0.25rem;
+    padding: 0.8rem;
+    width: 160%;
+    background: #f0f2f5;
+    margin-top: 1rem;
+    margin-right: -1rem;
+    margin-left: -7.5rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    box-shadow: 1px 1px 0.25rem #0000004d;
+  }
+
+  .buttonInput {
+    width: 150%;
+    margin-top: 2rem;
+    margin-left: 100px;
+    margin-right: auto;
+  }
+
+  input {    
   
   & .input-group {
     margin-top: 0.8rem;
@@ -318,6 +349,10 @@ export default createGlobalStyle`
     margin-top: 0.4rem;
     margin-left: 0;
     box-shadow: 1px 1px 0.25rem #0000004d;
+  }
+
+  .label_input {
+
   }
 
   .new_button {

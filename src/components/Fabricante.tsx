@@ -86,6 +86,8 @@ export function FormFabricante(){
     setFabricante(fabricanteTable);
   };
 
+  
+
   // useEffect(() => {
   //  axios.post('http://10.113.162.132:3333/fabricante', {
   //     nm_fabricante: fabricante,
@@ -108,7 +110,7 @@ export function FormFabricante(){
       <form action="">
         <div className="fabricante">
           <label><strong>Nome do Fabricante</strong></label>
-          <input value={fabricante} type="text" name="nm_fabricante" id="nm_fabricante" placeholder="Insira o Fabricante" required onChange={(event) => handleCadastro(event)}/>
+          <input className="input_fabricante" value={fabricante} type="text" name="nm_fabricante" id="nm_fabricante" placeholder="Insira o Fabricante" required onChange={(event) => handleCadastro(event)}/>
           
           <button className="new_button" onClick={(e)=>{handleClick(e)}}>Adicionar</button>
           <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
