@@ -124,7 +124,7 @@ export default function TabelaFabricante() {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[5, 10, 25, 50]}
           component="div"
           count={fabricantes.length}
           rowsPerPage={rowsPerPage}

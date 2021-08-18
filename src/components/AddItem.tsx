@@ -1,22 +1,44 @@
-export default function AdicionarItem(){
-  return(
+import axios from '../components/services/api'
+import { useEffect } from 'react';
+import { useState } from 'react';
+
+interface Responsedata {
+  id: number,
+  nm_fabricante: string,
+  nm_modelo: string,
+  nm_local: string,
+  nm_predio: string
+}
+
+export default function AdicionarItem() {
+  return (
     <>
-    <div className="form-fabricante">
-          <div className="modal">
-            <div className="form">
-                <h3 className="subtitle">ADICIONAR ITEM</h3>
-                <FormAddItem />
-                
-            </div>
-          </div>        
+      <div className="form-fabricante">
+        <div className="modal">
+          <div className="form">
+            <h3 className="subtitle">ADICIONAR ITEM</h3>
+            <FormAddItem />
+
+          </div>
         </div>
-  </>
+      </div>
+    </>
   )
-  }
+}
 
-function FormAddItem(){
+function FormAddItem() {
   //receber as variaveis do banco
+  const [fabricante, setFabricante] = useState('');
+  const [equipamento, setEquipamento] = useState('0');
 
+  useEffect(() => {
+    axios.get<Responsedata>("equipamento/byid/3")
+      .then((response) => {
+        const { nm_fabricante } = response.data;
+        setFabricante(nm_fabricante);
+      });
+
+  },[equipamento])
 
 
   //renderiza o formulário
@@ -27,43 +49,43 @@ function FormAddItem(){
   //AREA SELECT, O BANCO QUE PUXA
   //QUANTIDADE  PREENCHIDA PELO USUÁRIO
 
-  return(
+  return (
     <>
       <div>
         <form action="">
           <div className="formInput">
             <label><strong>ID</strong></label>
-            <input className="itemInput"type="text" name="id_item" id="id_item" placeholder="ID" required /> 
-        
+            <input className="itemInput" onBlur={(e)=> setEquipamento(e.target.value)} type="text" name="id_item" id="id_item" placeholder="ID" required />
+
             <label><strong>Fabricante</strong></label>
             <select className="itemInput" id="">
-              <option value="#">Selecione uma opção:</option>
+              <option value="#">{fabricante}</option>
               <option value="teste">OPÇÃO TESTE</option>
-              </select> 
+            </select>
 
             <label><strong>Modelo</strong></label>
             <select className="itemInput" id="">
-              <option value="#">Selecione uma opção:</option>
+              <option value="#">Modelo:</option>
               <option value="teste">OPÇÃO TESTE</option>
-              </select> 
+            </select>
 
             <label><strong>Local</strong></label>
             <select className="itemInput" id="">
-              <option value="#">Selecione uma opção:</option>
+              <option value="#">Local:</option>
               <option value="teste">OPÇÃO TESTE</option>
-              </select> 
+            </select>
 
             <label><strong>Area</strong></label>
             <select className="itemInput" id="">
-              <option value="#">Selecione uma opção:</option>
+              <option value="#">Area:</option>
               <option value="teste">OPÇÃO TESTE</option>
-              </select> 
+            </select>
 
             <label><strong>Quantidade</strong></label>
-            <input className="itemInput" type="number" name="id_quantidade" id="id_quantidade" placeholder="Quantidade" /> 
+            <input className="itemInput" type="number" name="id_quantidade" id="id_quantidade" placeholder="Quantidade" />
 
             <button className="buttonInput">Adicionar Item</button>
-                
+
           </div>
         </form>
       </div>
