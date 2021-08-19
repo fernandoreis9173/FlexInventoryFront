@@ -1,6 +1,9 @@
 import axios from '../components/services/api'
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { DashboardOutlined } from '@material-ui/icons';
+import { dataAttributes } from '@material/data-table';
+// import {Field} from 'formik';
 
 interface Responsedata {
   id: number,
@@ -28,17 +31,36 @@ export default function AdicionarItem() {
 
 function FormAddItem() {
   //receber as variaveis do banco
-  const [fabricante, setFabricante] = useState('');
-  const [equipamento, setEquipamento] = useState('0');
+  const [equipamento, setEquipamento] = useState('');
+  const [nm_fabricante, setFabricante] = useState('');
+  const [nm_modelo, setModelo] = useState('');
+  const [nm_local, setLocal] = useState('');
+  const [nm_predio, setPredio] = useState('');
+
 
   useEffect(() => {
-    axios.get<Responsedata>("equipamento/byid/3")
+    axios.get<Responsedata[]>("equipamento/byid/"+(!!equipamento ? equipamento : 0))
       .then((response) => {
-        const { nm_fabricante } = response.data;
+        const nm_fabricante = response.data[0].nm_fabricante;
+        const nm_modelo = response.data[0].nm_modelo;
+        const nm_local = response.data[0].nm_local;
+        const nm_predio = response.data[0].nm_predio;
+        console.log(response.data[0].nm_fabricante);
         setFabricante(nm_fabricante);
+        setModelo(nm_modelo);
+        setLocal(nm_local);
+        setPredio(nm_predio);
+      })
+      .catch((error)=>{
+        setFabricante('');
+        setModelo('');
+        setLocal('');
+        setPredio(''); 
       });
 
   },[equipamento])
+
+
 
 
   //renderiza o formulário
@@ -51,44 +73,35 @@ function FormAddItem() {
 
   return (
     <>
-      <div>
+
         <form action="">
-          <div className="formInput">
-            <label><strong>ID</strong></label>
-            <input className="itemInput" onBlur={(e)=> setEquipamento(e.target.value)} type="text" name="id_item" id="id_item" placeholder="ID" required />
+        <div className="formInput">
+          <label><strong>ID</strong></label>
+          <input className="itemInput" onBlur={(e)=> setEquipamento(e.target.value)} type="text" name="id" id="id" placeholder="ID" required />
 
-            <label><strong>Fabricante</strong></label>
-            <select className="itemInput" id="">
-              <option value="#">{fabricante}</option>
-              <option value="teste">OPÇÃO TESTE</option>
-            </select>
+          <label><strong>Fabricante</strong></label>
+          <input className="itemInput"  type="text" name="nm_fabricante" value={nm_fabricante} disabled />
 
-            <label><strong>Modelo</strong></label>
-            <select className="itemInput" id="">
-              <option value="#">Modelo:</option>
-              <option value="teste">OPÇÃO TESTE</option>
-            </select>
+          <label><strong>Modelo</strong></label>
+          <input className="itemInput"  type="text" name="nm_modelo" value={nm_modelo} disabled />
 
-            <label><strong>Local</strong></label>
-            <select className="itemInput" id="">
-              <option value="#">Local:</option>
-              <option value="teste">OPÇÃO TESTE</option>
-            </select>
 
-            <label><strong>Area</strong></label>
-            <select className="itemInput" id="">
-              <option value="#">Area:</option>
-              <option value="teste">OPÇÃO TESTE</option>
-            </select>
+          <label><strong>Local</strong></label>
+          <input className="itemInput"  type="text" name="nm_local" value={nm_local} disabled />
 
-            <label><strong>Quantidade</strong></label>
-            <input className="itemInput" type="number" name="id_quantidade" id="id_quantidade" placeholder="Quantidade" />
+          <label><strong>Area</strong></label>
+          <input className="itemInput"  type="text" name="nm_predio" value={nm_predio} disabled />
 
-            <button className="buttonInput">Adicionar Item</button>
+          <label><strong>Quantidade</strong></label>
+          <input className="itemInput" type="number" name="id_quantidade" id="id_quantidade" placeholder="Quantidade" />
 
-          </div>
-        </form>
+          <button className="buttonInput">Adicionar Item</button>
+
+        </div>
+      </form>
+      <div>
+        
       </div>
     </>
   )
-}
+    }
