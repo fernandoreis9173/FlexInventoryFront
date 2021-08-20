@@ -1,9 +1,5 @@
 import axios from '../components/services/api'
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { DashboardOutlined } from '@material-ui/icons';
-import { dataAttributes } from '@material/data-table';
-// import {Field} from 'formik';
+import { useState, FormEvent, useEffect } from 'react';
 
 interface Responsedata {
   id: number,
@@ -36,10 +32,11 @@ function FormAddItem() {
   const [nm_modelo, setModelo] = useState('');
   const [nm_local, setLocal] = useState('');
   const [nm_predio, setPredio] = useState('');
+  const [quantidade, setQuantidade] = useState(0);
 
 
   useEffect(() => {
-    axios.get<Responsedata[]>("equipamento/byid/"+(!!equipamento ? equipamento : 0))
+    axios.get<Responsedata[]>("equipamento/byid/" + (!!equipamento ? equipamento : 0))
       .then((response) => {
         const nm_fabricante = response.data[0].nm_fabricante;
         const nm_modelo = response.data[0].nm_modelo;
@@ -51,57 +48,86 @@ function FormAddItem() {
         setLocal(nm_local);
         setPredio(nm_predio);
       })
-      .catch((error)=>{
+      .catch((error) => {
         setFabricante('');
         setModelo('');
         setLocal('');
-        setPredio(''); 
+        setPredio('');
       });
 
-  },[equipamento])
+  }, [equipamento])
 
 
 
+  function zpl(serial: string): string {
 
-  //renderiza o formulário
-  //ID PREENCHIDO PELO USUÁRIO
-  //FABRICANTE SELECT, O BANCO QUE PUXA
-  //MODELO SELECT, O BANCO QUE PUXA
-  //LOCAL SELECT, O BANCO QUE PUXA
-  //AREA SELECT, O BANCO QUE PUXA
-  //QUANTIDADE  PREENCHIDA PELO USUÁRIO
+    const label = `^XA
+    ^MMT
+    ^PW900
+    ^LL0600
+    ^LS0
+    ^BY8,3,99^FT739,285^BCI,,Y,N
+    ^FD>:${serial}^FS
+    ^PQ1,0,1,Y^XZ`;
+    return label;
+
+  }
+
+  async function handleClick(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+
+    for (let index = 0; index < quantidade; index++) {
+
+      axios.post("serial", {
+        id_equipamento: equipamento,
+      }).then((response) => {
+
+        const serial = response.data[0].id;
+        const label = zpl(serial);
+
+        axios.post("printer", {
+          zpl: label,
+          host: "10.113.137.218",
+          port: 9100
+        }).then((response) => console.log(response.data));
+      });
+    }
+  };
+
+
 
   return (
     <>
 
-        <form action="">
+      <form action="" onSubmit={handleClick}>
         <div className="formInput">
           <label><strong>ID</strong></label>
-          <input className="itemInput" onBlur={(e)=> setEquipamento(e.target.value)} type="text" name="id" id="id" placeholder="ID" required />
+          <input className="itemInput" onBlur={(e) => setEquipamento(e.target.value)} type="text" name="id" id="id" placeholder="ID" required />
 
           <label><strong>Fabricante</strong></label>
-          <input className="itemInput"  type="text" name="nm_fabricante" value={nm_fabricante} disabled />
+          <input className="itemInput" type="text" name="nm_fabricante" value={nm_fabricante} disabled />
 
           <label><strong>Modelo</strong></label>
-          <input className="itemInput"  type="text" name="nm_modelo" value={nm_modelo} disabled />
+          <input className="itemInput" type="text" name="nm_modelo" value={nm_modelo} disabled />
 
 
           <label><strong>Local</strong></label>
-          <input className="itemInput"  type="text" name="nm_local" value={nm_local} disabled />
+          <input className="itemInput" type="text" name="nm_local" value={nm_local} disabled />
 
           <label><strong>Area</strong></label>
-          <input className="itemInput"  type="text" name="nm_predio" value={nm_predio} disabled />
+          <input className="itemInput" type="text" name="nm_predio" value={nm_predio} disabled />
 
           <label><strong>Quantidade</strong></label>
-          <input className="itemInput" type="number" name="id_quantidade" id="id_quantidade" placeholder="Quantidade" />
+          <input className="itemInput" type="number" onChange={(e) => setQuantidade(Number(e.target.value))} name="id_quantidade" id="id_quantidade" placeholder="Quantidade" />
 
           <button className="buttonInput">Adicionar Item</button>
 
         </div>
       </form>
       <div>
-        
+
       </div>
     </>
   )
-    }
+}
